@@ -122,6 +122,30 @@ class Tracking extends Ups
     }
 
     /**
+     * Search for multiple shipments by reference number.
+     *
+     * @param string $referenceNumber Reference numbers can be a purchase order number, job number, etc. Reference number can be added when creating a shipment.
+     * @param string $requestOption
+     *
+     * @throws Exception
+     *
+     * @return stdClass
+     */
+    public function trackMultiByReference($referenceNumber, $requestOption = 'activity')
+    {
+        $prevMultiShipmentValue = $this->allowMultipleShipments;
+        $this->allowMultipleShipments(true);
+
+        $this->referenceNumber = $referenceNumber;
+        $this->requestOption = $requestOption;
+        $response = $this->getFormattedResponse();
+
+        $this->allowMultipleShipments($prevMultiShipmentValue);
+
+        return $response;
+    }
+
+    /**
      * Set shipper number
      *
      * @param string $shipperNumber
